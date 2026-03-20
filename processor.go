@@ -5,72 +5,71 @@ import (
 	"strings"
 )
 
-// CONVERTS HEXADECIMAL TO AND BINARY TO DECIMAL
-func baseConversion(text string) string {
-	word := strings.Fields(text)
+// PROCESS TEXT: base conversion + case transforms
+func processText(text string) string {
+	words := strings.Fields(text)
 	var result []string
-	for i := 0; i < len(word); i++ {
-		if word[i] == "(hex)" && i > 0 {
-			hexval := word[i-1]
-			dec, err := strconv.ParseInt(hexval, 16, 64)
-			if err == nil {
-				result[len(result)-1] = strconv.FormatInt(dec, 10)
-			}
-			continue
-		}
-		if word[i] == "(bin)" && i > 0 {
-			hexval := word[i-1]
-			dec, err := strconv.ParseInt(hexval, 2, 64)
-			if err == nil {
-				result[len(result)-1] = strconv.FormatInt(dec, 10)
-			}
-			continue
-		}
-		result = append(result, word[i])
-	}
-	return strings.Join(result, " ")
-}
 
-// HANDLES (UP), (LOW) AND (CAP) CASE
-func applyCaseTransform(text string) string {
-	word := strings.Fields(text)
-	var result []string
-	for i := 0; i < len(word); i++ {
-		c := word[i]
-		if strings.HasPrefix(c, "(") {
-			n := c
-			for !strings.HasSuffix(n, ")") && i+1 < len(word) {
-				i++
-				n += " " + word[i]
+	for i := 0; i < len(words); i++ {
+		w := words[i]
+
+		// 1️⃣ Handle base conversions first
+		if w == "(hex)" && i > 0 {
+			val := words[i-1]
+			if dec, err := strconv.ParseInt(val, 16, 64); err == nil {
+				result[len(result)-1] = strconv.FormatInt(dec, 10)
 			}
-			n = strings.TrimSuffix(strings.TrimPrefix(n, "("), ")")
-			pt := strings.Split(n, ",")
-			action := strings.TrimSpace(pt[0])
+			continue
+		}
+
+		if w == "(bin)" && i > 0 {
+			val := words[i-1]
+			if dec, err := strconv.ParseInt(val, 2, 64); err == nil {
+				result[len(result)-1] = strconv.FormatInt(dec, 10)
+			}
+			continue
+		}
+
+		// 2️⃣ Handle case transformations
+		if strings.HasPrefix(w, "(") {
+			marker := w
+			for !strings.HasSuffix(marker, ")") && i+1 < len(words) {
+				i++
+				marker += " " + words[i]
+			}
+			marker = strings.TrimSuffix(strings.TrimPrefix(marker, "("), ")")
+			parts := strings.Split(marker, ",")
+			action := strings.TrimSpace(parts[0])
 			count := 1
-			if len(pt) == 2 {
-				if j, err := strconv.Atoi(strings.TrimSpace(pt[1])); err == nil {
-					count = j
+			if len(parts) == 2 {
+				if n, err := strconv.Atoi(strings.TrimSpace(parts[1])); err == nil {
+					count = n
 				}
 			}
-			for g := len(result) - count; g < len(result); g++ {
-				if g >= 0 {
+			for j := len(result) - count; j < len(result); j++ {
+				if j >= 0 {
 					switch action {
 					case "up":
-						result[g] = strings.ToUpper(result[g])
+						result[j] = strings.ToUpper(result[j])
 					case "low":
-						result[g] = strings.ToLower(result[g])
+						result[j] = strings.ToLower(result[j])
 					case "cap":
-						result[g] = capitalizeword(result[g])
+						result[j] = capitalizeWord(result[j])
 					}
 				}
 			}
 			continue
 		}
-		result = append(result, c)
+
+		// 3️⃣ Regular words → append to result
+		result = append(result, w)
 	}
+
 	return strings.Join(result, " ")
 }
-func capitalizeword(s string) string {
+
+// HELPER FUNCTION: capitalize first letter of a word
+func capitalizeWord(s string) string {
 	if len(s) == 0 {
 		return s
 	}

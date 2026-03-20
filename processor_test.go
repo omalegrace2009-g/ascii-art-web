@@ -2,26 +2,13 @@ package main
 
 import "testing"
 
-func TestBaseConversion(t *testing.T) {
-	input := "simply add 1E (hex) files"
-	output := "simply add 30 files"
-	expected := baseConversion(input)
-	if expected != output {
-		t.Errorf("Expected %s, got %s", output, expected)
-	}
-	input1 := "simply add 10 (bin) files"
-	output1 := "simply add 2 files"
-	expected1 := baseConversion(input1)
-	if expected1 != output1 {
-		t.Errorf("Expected1 %s, got %s", output1, expected1)
-	}
-}
+func TestProcessText(t *testing.T) {
+	input := "add 1E (hex) files, make them nice (cap) and 101 (bin) items (up, 2)"
+	expected := "add 30 files, make them Nice and 5 ITEMS"
 
-func TestApplyCaseTransform(t *testing.T) {
-	input := "it (cap) was (up) FUN AND (low, 2)"
-output := "It WAS fun and"
-	expected := applyCaseTransform(input)
-	if output != expected {
-		t.Errorf("Expected %s, got %s", output, expected)
+	result := processText(input)
+
+	if result != expected {
+		t.Errorf("Expected %s, got %s", expected, result)
 	}
 }

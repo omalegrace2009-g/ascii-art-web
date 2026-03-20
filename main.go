@@ -17,8 +17,7 @@ func main() {
 		panic(err)
 	}
 	text := string(data)
-	text = baseConversion(text)
-	text = applyCaseTransform(text)
+	text = processText(text)
 	err = os.WriteFile(outputFile, []byte(text+"\n"), 0644)
 	if err != nil {
 		panic(err)
