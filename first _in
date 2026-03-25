@@ -4,37 +4,40 @@ import (
 	"fmt"
 	"strings"
 )
-// write a function that ask the user for his name 
 func peace() {
 	var input string
-fmt.Println("Input your name: ")
-fmt.Scanln(&input)
-var operation string 
-fmt.Println("Enter operation: (lastChar, capitalize, deleteIndex) ")
-fmt.Scanln(&operation)
-switch operation {
-case "lastChar": 
+	fmt.Println("Input your name: ")
+	fmt.Scanln(&input)
+	var operation string 
+	fmt.Println("Enter operation: (lastChar, capitalize, deleteIndex) ")
+	fmt.Scanln(&operation)
+	switch operation {
+	case "lastChar": 
 		fmt.Println(string(input[len(input)-1]))
 
-case "capitalize":
+	case "capitalize":
 	fmt.Println(strings.ToUpper(input))
 
-case "deleteIndex": 
-var num int 
+	case "deleteIndex": 
+	var num int 
+	for {
+	fmt.Println("Enter index: ")
+	fmt.Scan(&num)
 
-fmt.Println("Enter index: ")
-fmt.Scan(&num)
-if num >= 0 && num < len(input) {
+	if num >= 0 && num < len(input) {
 	input = input[:num] + input[num+1:]
 	fmt.Println(input)
 	break
-} else {
-	fmt.Println("try again")
-}
-default: 
-fmt.Println("invalid operation")
-}
-}
+	} else {
+	fmt.Println("Invalid Index restarting .....")
+	continue
+	}
+	}
+	default: 
+	fmt.Println("invalid operation")
+	}
+	}
+
 func main() {
 	peace()
 }
