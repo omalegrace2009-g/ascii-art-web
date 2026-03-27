@@ -87,4 +87,62 @@ func main() {
 	default:
 		fmt.Println("Enter a valid operation")
 }
+}package main
+
+import (
+	"fmt"
+	"strings"
+	"bufio"
+	"os"
+)
+
+func main() {
+	reader := bufio.NewReader(os.Stdin)
+	for {
+		fmt.Println("Welcome To String Processor")
+	fmt.Println()
+
+	var hj string 
+
+	fmt.Println("Enter your name: ")
+	hj, _ = reader.ReadString('\n')
+	hj = strings.TrimSpace(hj)
+	fmt.Scanln(&hj)
+
+	var b string
+
+	fmt.Println("Select Operation: ")
+	b, _ = reader.ReadString('\n')
+	b = strings.TrimSpace(b)
+	fmt.Println("LastChar")
+	fmt.Println("Capitalize")
+	fmt.Println("DeleteIndex")
+	fmt.Scanln(&b)
+	switch b {
+	case "LastChar":
+		g := strings.Split(hj, " ")
+	for i, word := range g {
+		if len(word) > 0 {
+		 g[i] = word[:len(word)-1]
+		}
+		fmt.Println(strings.Join(g, " "))
+	}
+	case "Capitalize":
+		fmt.Println(strings.ToUpper(hj))
+	case "DeleteIndex":
+		var n int
+		for {
+		fmt.Println("Enter index to be deleted: ")
+		fmt.Scanln(&n)
+		if n >= 0 && n < len(hj) {
+		hj = hj[:n] + hj[n+1:]
+		fmt.Println(hj)
+		break
+		fmt.Println("Invalid Index, Restarting...")
+		}
+	}
+	default:
+		fmt.Println("Enter a valid operation")
+}
+}
 }
