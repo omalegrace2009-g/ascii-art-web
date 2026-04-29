@@ -1,13 +1,14 @@
 package main
 
-func ValidateInput(text string, banner map[rune][]string) bool {
-	for _, r := range text {
-		if r == '\n' || r == '\r' {
-			continue
-		}
-		if _, exists := banner[r]; !exists {
-			return false
+import (
+	"fmt"
+)
+
+func ValidateInput(s string) (rune, error) {
+	for _, w := range s {
+		if w < 32 || w > 126 {
+			return w, fmt.Errorf("non ascii character : %c", w)
 		}
 	}
-	return true
+	return 0, nil
 }
