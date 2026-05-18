@@ -2,13 +2,11 @@ package main
 
 import (
 	"fmt"
-	"time"
 )
 
 func main() {
 	fmt.Println("**Welcome To OMAHLAY calculative World!**")
 	fmt.Println()
-	time.Sleep(3 * time.Second)
 	for {
 		fmt.Println()
 		var operation string
@@ -23,7 +21,7 @@ func main() {
 		var number1 float64
 		var number2 float64
 		switch operation {
-			case "1":
+		case "1":
 			fmt.Println("Enter firstnumber: ")
 			_, err := fmt.Scan(&number1)
 			fmt.Println("Enter second number: ")
@@ -31,7 +29,7 @@ func main() {
 			if err != nil || err1 != nil {
 				fmt.Println("input valid numbers only! ")
 			}
-			fmt.Println("Result is: ", number1 + number2)
+			fmt.Println("Result is: ", number1+number2)
 
 		case "2":
 
@@ -70,9 +68,10 @@ func main() {
 			}
 
 		case "5":
-			fmt.Println("program quit successfully..")
+			if operation == "5" {
+				fmt.Println("program quit successfully..")
+			}
 			break
-
 		case "6":
 			fmt.Println("input the numbers you want to work to carry out the operation on")
 			fmt.Println("choose the operation you want e.g select <<1>> to add ")

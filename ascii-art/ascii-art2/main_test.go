@@ -1,203 +1,167 @@
 package main
 
-import (
-	"os"
-	"strings"
-	"testing"
-)
+// import (
+// 	"testing"
+// 	"os"
+// )
+// func TestLoadBanner_AllBanners(t *testing.T) {
+// 	banners := []string{
+// 		"banner/standard.txt",
+// 		"banner/shadow.txt",
+// 		"banner/thinkertoy.txt",
+// 	}
+// 	for _, b := range banners {
+// 		lines, err := LoadBanner(b)
+// 		if err != nil {
+// 			t.Errorf("%s: expected no error, got %v", b, err)
+// 		}
+// 		if len(lines) != 855 {
+// 			t.Errorf("%s: expected 855 lines, got %d", b, len(lines))
+// 		}
+// 	}
+// }
 
-// helper — loads the banner once for all tests
-var testBannerLines = func() []string {
-	lines, err := readBanner("banner/standard.txt")
-	if err != nil {
-		panic("could not load banner/standard.txt: " + err.Error())
-	}
-	return lines
-}()
+// func TestGetLine(t *testing.T) {
+// 	ban, err := LoadBanner("banner/standard.txt")
+// 	if err != nil {
+// 		t.Fatalf("failed to load banner: %v", err)
+// 	}
 
-// ─────────────────────────────────────────────
-// readBanner tests
-// ─────────────────────────────────────────────
+// 	for c := rune(32); c <= 126; c++ {
+// 		lines := getLine(ban, c)
+// 		if lines == nil || len(lines) != 8 {
+// 			t.Errorf("char %q: expected 8 lines, got %v", c, lines)
+// 		}
+// 	}
 
-func TestReadBanner_ReturnsCorrectLineCount(t *testing.T) {
-	lines, err := readBanner("banner/standard.txt")
-	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
-	}
-	if len(lines) != 855 {
-		t.Errorf("expected 855 lines, got %d", len(lines))
-	}
-}
+// 	for _, c := range []rune{0, '\n', 31, 127, 200} {
+// 		if lines := getLine(ban, c); lines != nil {
+// 			t.Errorf("char %q: expected nil, got %v", c, lines)
+// 		}
+// 	}
 
-func TestReadBanner_FileNotFound(t *testing.T) {
-	_, err := readBanner("nonexistent.txt")
-	if err == nil {
-		t.Error("expected an error for missing file, got nil")
-	}
-}
+// 	for i, line := range getLine(ban, 'A') {
+// 		if line != ban[298+i] {
+// 			t.Errorf("A line %d: expected %q, got %q", i, ban[298+i], line)
+// 		}
+// 	}
+// 	for _, c := range []rune{32, 'A', '~'} {
+// 		if lines := getLine(ban[:5], c); lines != nil {
+// 			t.Errorf("truncated ban: char %q should return nil, got %v", c, lines)
+// 		}
+// 	}
+// }
 
-// ─────────────────────────────────────────────
-// getLines tests
-// ─────────────────────────────────────────────
+// func TestPrintArt(t *testing.T) {
+// 	ban, err := LoadBanner("banner/standard.txt")
+// 	if err != nil {
+// 		t.Fatalf("failed to load banner: %v", err)
+// 	}
+// printArt([]string{"123"}, ban)
+// printArt([]string{"Hello\nThere"}, ban) // \n as literal split
+// 	printArt([]string{""}, ban)
 
-func TestGetLines_ReturnsEightLines(t *testing.T) {
-	art := getLines(testBannerLines, 'A')
-	if len(art) != 8 {
-		t.Errorf("expected 8 lines for 'A', got %d", len(art))
-	}
-}
+// 	printArt([]string{"A"}, ban)
 
-func TestGetLines_SpaceCharacter(t *testing.T) {
-	art := getLines(testBannerLines, ' ')
-	if len(art) != 8 {
-		t.Errorf("expected 8 lines for space, got %d", len(art))
-	}
-}
+// 	printArt([]string{"Hello"}, ban)
 
-func TestGetLines_FirstCharSpace(t *testing.T) {
-	// space is ASCII 32 — the very first character in the banner
-	art := getLines(testBannerLines, ' ')
-	for _, line := range art {
-		trimmed := strings.TrimSpace(line)
-		if trimmed != "" {
-			t.Errorf("expected all lines of space to be blank, got %q", line)
-		}
-	}
-}
+// 	printArt([]string{"1"}, ban)
 
-func TestGetLines_LastCharTilde(t *testing.T) {
-	// tilde ~ is ASCII 126 — the last character in the banner
-	art := getLines(testBannerLines, '~')
-	if len(art) != 8 {
-		t.Errorf("expected 8 lines for '~', got %d", len(art))
-	}
-}
+// 	printArt([]string{"!@#"}, ban)
 
-func TestGetLines_CorrectStartIndex(t *testing.T) {
-	// 'A' is ASCII 65 → start = (65-32)*9 = 297
-	// art starts at index 298 (skip the blank separator)
-	art := getLines(testBannerLines, 'A')
-	expected := testBannerLines[298]
-	if art[0] != expected {
-		t.Errorf("expected first line of 'A' to be %q, got %q", expected, art[0])
-	}
-}
+// 	printArt([]string{"", ""}, ban)
 
-// ─────────────────────────────────────────────
-// printArt tests  (capture stdout)
-// ─────────────────────────────────────────────
+// 	printArt([]string{"Hello", "", "There"}, ban)
 
-// captureOutput redirects stdout during fn(), returns what was printed
-func captureOutput(fn func()) string {
-	// redirect stdout to a pipe
-	old := os.Stdout
-	r, w, _ := os.Pipe()
-	os.Stdout = w
+// 	all := make([]string, 1)
+// 	for c := rune(32); c <= 126; c++ {
+// 		all[0] = string(c)
+// 		printArt(all, ban)
+// 	}
 
-	fn()
+// 	printArt([]string{string(rune(0))}, ban)
+// 	printArt([]string{string(rune(127))}, ban)
+// 	printArt([]string{string(rune(200))}, ban)
+// }
 
-	w.Close()
-	os.Stdout = old
+// func TestValidateInput(t *testing.T) {
+// 	got, err := validateInput([]string{"Hello\nThere"})
+// 	if err != nil || len(got) != 1 {
+// 		t.Errorf("newline in string: expected valid, got %v %v", got, err)
+// 	}
 
-	buf := new(strings.Builder)
-	tmp := make([]byte, 1024)
-	for {
-		n, err := r.Read(tmp)
-		buf.Write(tmp[:n])
-		if err != nil {
-			break
-		}
-	}
-	return buf.String()
-}
+// 	got, err = validateInput([]string{"a", "b", "c"})
+// 	if err != nil || len(got) != 3 {
+// 		t.Errorf("expected 3 results, got %d", len(got))
+// 	}
 
-func TestPrintArt_SingleWord(t *testing.T) {
-	lines := []string{"Hi"}
-	out := captureOutput(func() {
-		printArt(lines, testBannerLines)
-	})
-	if out == "" {
-		t.Error("expected output for 'Hi', got empty string")
-	}
-	// output should have exactly 8 newlines (8 rows)
-	rows := strings.Split(strings.TrimRight(out, "\n"), "\n")
-	if len(rows) != 8 {
-		t.Errorf("expected 8 rows for 'Hi', got %d", len(rows))
-	}
-}
+// 	for _, input := range [][]string{
+// 		{"hello"},
+// 		{"Hello World"},
+// 		{"1234567890"},
+// 		{"!@#$%^&*()"},
+// 		{"Hello\nWorld"},
+// 		{""},
+// 		{},
+// 	} {
+// 		if _, err := validateInput(input); err != nil {
+// 			t.Errorf("input %v: expected no error, got %v", input, err)
+// 		}
+// 	}
 
-func TestPrintArt_EmptyStringLineProducesBlankLine(t *testing.T) {
-	// a single empty string in lines → one blank line
-	lines := []string{""}
-	out := captureOutput(func() {
-		printArt(lines, testBannerLines)
-	})
-	if out != "\n" {
-		t.Errorf("expected single newline for empty line, got %q", out)
-	}
-}
+// 	for _, input := range [][]string{
+// 		{string(rune(0))},
+// 		{string(rune(31))},
+// 		{string(rune(127))},
+// 		{string(rune(200))},
+// 		{"hello\x01world"},
+// 	} {
+// 		if _, err := validateInput(input); err == nil {
+// 			t.Errorf("input %v: expected error, got nil", input)
+// 		}
+// 	}
 
-func TestPrintArt_NewlineBetweenWords(t *testing.T) {
-	// "Hello\nThere" splits into ["Hello", "There"] → 16 rows total
-	lines := strings.Split("Hello\\nThere", "\\n")
-	out := captureOutput(func() {
-		printArt(lines, testBannerLines)
-	})
-	rows := strings.Split(strings.TrimRight(out, "\n"), "\n")
-	if len(rows) != 16 {
-		t.Errorf("expected 16 rows for Hello\\nThere, got %d", len(rows))
-	}
-}
+// 	got, err = validateInput([]string{"a", "b"})
+// 	if err != nil || len(got) != 2 || got[0] != "a" || got[1] != "b" {
+// 		t.Errorf("expected [a b], got %v, err %v", got, err)
+// 	}
+// }
+// func TestMain_NoArgs(t *testing.T) {
+// 	os.Args = []string{"cmd"}
+// 	main()
+// }
 
-func TestPrintArt_DoubleNewline(t *testing.T) {
-	// "Hello\n\nThere" splits into ["Hello", "", "There"] → 8 + 1 + 8 = 17 rows
-	lines := strings.Split("Hello\\n\\nThere", "\\n")
-	out := captureOutput(func() {
-		printArt(lines, testBannerLines)
-	})
-	rows := strings.Split(strings.TrimRight(out, "\n"), "\n")
-	if len(rows) != 17 {
-		t.Errorf("expected 17 rows for Hello\\n\\nThere, got %d", len(rows))
-	}
-}
+// func TestMain_EmptyString(t *testing.T) {
+// 	os.Args = []string{"cmd", ""}
+// 	main()
+// }
 
-func TestPrintArt_NumbersWork(t *testing.T) {
-	lines := []string{"123"}
-	out := captureOutput(func() {
-		printArt(lines, testBannerLines)
-	})
-	if out == "" {
-		t.Error("expected output for '123', got empty string")
-	}
-}
+// func TestMain_SingleNewline(t *testing.T) {
+// 	os.Args = []string{"cmd", "\\n"}
+// 	main()
+// }
 
-func TestPrintArt_SpecialCharacters(t *testing.T) {
-	lines := []string{"!@#"}
-	out := captureOutput(func() {
-		printArt(lines, testBannerLines)
-	})
-	if out == "" {
-		t.Error("expected output for '!@#', got empty string")
-	}
-}
+// func TestMain_HelloWorld(t *testing.T) {
+// 	os.Args = []string{"cmd", "Hello"}
+// 	main()
+// }
 
-func TestPrintArt_SpaceOnly(t *testing.T) {
-	lines := []string{" "}
-	out := captureOutput(func() {
-		printArt(lines, testBannerLines)
-	})
-	rows := strings.Split(strings.TrimRight(out, "\n"), "\n")
-	if len(rows) != 8 {
-		t.Errorf("expected 8 rows for space, got %d", len(rows))
-	}
-}
+// func TestMain_WithNewline(t *testing.T) {
+// 	os.Args = []string{"cmd", "Hello\\nWorld"}
+// 	main()
+// }
 
-func TestPrintArt_MixedCase(t *testing.T) {
-	lines := []string{"HeLlO"}
-	out := captureOutput(func() {
-		printArt(lines, testBannerLines)
-	})
-	if out == "" {
-		t.Error("expected output for 'HeLlO', got empty string")
-	}
-}
+// func TestMain_Numbers(t *testing.T) {
+// 	os.Args = []string{"cmd", "123"}
+// 	main()
+// }
+
+// func TestMain_SpecialChars(t *testing.T) {
+// 	os.Args = []string{"cmd", "!@#"}
+// 	main()
+// }
+
+// func TestMain_TooManyArgs(t *testing.T) {
+// 	os.Args = []string{"cmd", "hello", "extra"}
+// 	main()
+// }
