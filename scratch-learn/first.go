@@ -2,24 +2,27 @@ package main
 
 import (
 	"fmt"
+	"bufio"
+	"os"
 )
 
 func main() {
 	var g int
 	fmt.Println("Enter a number:")
-		fmt.Scan(&g)
+	read := bufio.NewReader(os.Stdin)
+		_, err := fmt.Scan(&g)
+		if err != nil {
+			fmt.Println("input numbers only!!")
+		_, _ = read.ReadString('\n')
+			return 
+		}
 		for i := 1; i <= g; i++ {
 	if i%5 == 0 && i%3 == 0 {
 		fmt.Println("fizzbuzz")
-		continue
-	}
-	if i%3 == 0 {
+	} else if i%3 == 0 {
 		fmt.Println("fizz")
-		continue
-	}
-	if i%5 == 0 {
+	} else if i%5 == 0 {
 		fmt.Println("buzz")
-continue
 	}  else {
 		fmt.Println(i)
 	}
