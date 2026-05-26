@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"strings"
-	"strconv"
+	"bufio"
+	"os"
 )
 
 func main() {
@@ -14,31 +14,35 @@ func main() {
 	fmt.Println("Welcome to Omahlay Calculative World!")
 	fmt.Println()
 	fmt.Println("Enter first number: ")
-	in1, err := fmt.Scan(&input1)
-	if err != nil {
-		fmt.Println("Input numbers only")
-		input11, _ := strconv.Atoi(strings.TrimSuffix(in1, "\n"),in1)
-		return
-	}
+	read := bufio.NewReader(os.Stdin)
+	_, err := fmt.Scan(&input1)
+     if err != nil {
+     fmt.Println("Input numbers only!!")
+	 _, _ = read.ReadString('\n')
+     return
+     }
 	fmt.Println("Enter second number: ")
-	in2, err := fmt.Scan(&input2)
+	_, err = fmt.Scan(&input2)
     if err != nil {
-		fmt.Println("Input numbers only")
-			input22 := strings.TrimSuffix(in2, "\n")
+		fmt.Println("Input numbers only!!")
+		_, _ = read.ReadString('\n')
 		return
 	}
-		fmt.Println()
 	fmt.Println("Enter Operation: ")
 	fmt.Scan(&Operation)
 	switch Operation {
 	case "+":
-		fmt.Println("Result is: ", input11 + input22)
+		fmt.Println("Result is: ", input1 + input2)
 		case "-":
-		fmt.Println("Result is: ", input11 - input22)
+		fmt.Println("Result is: ", input1 - input2)
 		case "*":
-		fmt.Println("Result is: ", input11 * input22)
+		fmt.Println("Result is: ", input1 * input2)
 		case "/":
-		fmt.Println("Result is: ", input11 / input22)
+			if input2 == 0 {
+			fmt.Println("cannot divide by 0")
+			return
+		}
+		fmt.Println("Result is: ", input1 / input2)
 		default:
 			fmt.Println("Invalid Input")
 	}
