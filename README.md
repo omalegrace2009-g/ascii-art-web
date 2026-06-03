@@ -1,2 +1,13 @@
 # Ascii-art-web
 
+
+## DESCRIPTION
+
+
+## AUTHORS
+
+
+## USAGE: HOW TO RUN
+
+
+## IMPLEMENTATION DETAILS: ALGORITHM
