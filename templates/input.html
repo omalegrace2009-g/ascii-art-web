@@ -1,21 +1,26 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html>
     <head>
         <title>ASCII-ART-WEB</title>
-    </head>
-    <body>
-        <h1>ASCII-ART-GENERATOR</h1>
-        <form action="/ascii-art" method="POST">
-            <input type="text" name= "text">
-            <br>
-            <input type="radio" name="banners" value="banners/standard.txt">standard
-            <br>
-            <input type="radio" name="banners" value="banners/shadow.txt">shadow
-            <br>
-            <input type="radio" name="banners" value="banners/thinkertoy.txt">thinkertoy
-            <br>
-            <input type="submit" name="submit" value="submit">
-            </form>
-            <pre>{{.Result}}</pre>
-        </body>
-        </html>
+        </head>
+            <body>
+                <h1>ASCII ART GENERATOR</h1>
+                Enter Text;
+                <form action="/ascii-art" method="POST">
+                    <input type="text" name="text">
+                    <br>
+                    Choose Banner Format;
+                    <br>
+                    <input type="radio" name="banners" value="banners/standard.txt">standard
+                    <br>
+                    <input type="radio" name="banners" value="banners/shadow.txt">shadow
+                    <br>
+                    <input type="radio" name="banners" value="banners/thinkertoy.txt">thinkertoy
+                    <br>
+                    <input type="submit" name="submit" value="submit">
+                    </form>
+                  Ascii-Result;
+                    <pre>{{.Result}}</pre>
+                    </body>
+                    </title>
+                    </html>

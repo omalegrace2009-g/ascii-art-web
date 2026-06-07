@@ -4,30 +4,31 @@ import (
 	"net/http"
 	"fmt"
 	"html/template"
+	"ascii-art-web/ascii"
 )
 func HandleArt(w http.ResponseWriter, r *http.Request) {
-	if r.Method != "POST" {
+	if r.Method != "GET" {
 		http.Error(w, "400 Bad Request", http.StatusBadRequest)
 		return
 	}
 	text := r.FormValue("text")
 	if len(text) == 0 {
 		fmt.Println("Incorrect Request: ", nil)
-		http.Error(w, "400 Bad Request", http.StatusBadRequest)
+		http.Error(w, "404 Not Found", http.StatusNotFound)
 		return
 	}
 	banner := r.FormValue("banners")
 	if len(banner) == 0 {
-		http.Error(w, "400 Bad Request", http.StatusBadRequest)
+		http.Error(w, "404 Not Found", http.StatusNotFound)
 		return
 	}
-	fontmap, err := LoadBanner(banner)
+	fontmap, err := ascii.LoadBanner(banner)
 	if err != nil {
 		fmt.Println("Error Reading banner file: ", err)
 		http.Error(w, "404 Not Found", http.StatusNotFound)
 		return
 	}
-	generate := GenerateArt(text, fontmap)
+	generate := ascii.GenerateArt(text, fontmap)
 	data := PageData{Result: generate}
 	tmpl, err := template.ParseFiles("templates/input.html")
 	if err != nil {

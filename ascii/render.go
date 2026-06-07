@@ -1,4 +1,4 @@
-package main
+package ascii
 
 func RenderLine(text string, banner map[rune][]string) []string {
 	word := make([]string, 8)
