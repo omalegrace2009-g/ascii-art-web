@@ -8,6 +8,12 @@ func GenerateArt(input string, banner map[rune][]string) string {
 	if input == "" {
 		return ""
 	}
+
+	_, err := ValidateInput(input)
+	if err != nil {
+		return ""
+	}
+	
 	w := SplitInput(input)
 	for _, q := range w {
 		if q != "" {

@@ -1,16 +1,21 @@
 package main
 
 import (
-	"net/http"
 	"fmt"
+	"log"
+	"net/http"
 )
 
 type PageData struct {
-	Message string
+	Result string
 }
+
 func main() {
 	http.HandleFunc("/", HandlePage)
-	// http.HandleFunc("/ascii-art", HandleArt)
+    http.HandleFunc("/ascii-art", HandleArt)
 	fmt.Println("Server Listening at http://localhost:8080")
-	http.ListenAndServe(":8080", nil)
+	err :=http.ListenAndServe(":8080", nil)
+	if err != nil {
+		log.Fatal(err)
+	}
 }

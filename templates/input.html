@@ -1,10 +1,16 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>ASCII ART WEB</title>
-    </head>
-    <body>
-        <h1>ASCII ART GENERATOR</h1>
-        <p>{{.Message}}</p>
-    </body>
-</html>
+<h1>ASCII ART GENERATOR</h1>
+    <form action="/ascii-art" method="POST">
+        <input type="text" name="text" placeholder="Enter text">
+            <br>
+            <label for="banner">Choose a banner:</label>
+            
+            <select name="banner" id="banner" required>
+                <option value="">-- Select Banner --</option>
+                <option value="standard">standard</option>
+                <option value="shadow">shadow</option>
+                <option value="thinkertoy">thinkertoy</option>
+            </select>
+            <br>
+            
+            <button type="submit">Submit</button>
+    </form>
