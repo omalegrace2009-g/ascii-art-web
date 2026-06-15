@@ -12,19 +12,19 @@ func HandlePage(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if r.URL.Path != "/" {
-		http.Error(w, "404 Not Found", http.StatusNotFound)
+		http.Error(w, "400 Bad Request", http.StatusBadRequest)
 		return
 	}
 
-	templ, err := template.ParseFiles("templates/input.html")
+	tem, err := template.ParseFiles("templates/input.html")
 	if err != nil {
 		http.Error(w, "500 Internal Server Error", http.StatusInternalServerError)
 		return
 	}
 
-	err = templ.Execute(w, nil)
+	err = tem.Execute(w, nil)
 	if err != nil {
-		http.Error(w, "500 Internal Server Error", http.StatusInternalServerError)
+		http.Error(w, "500 Internal server Error", http.StatusInternalServerError)
 		return
 	}
 }

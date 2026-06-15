@@ -6,25 +6,28 @@ import (
 	"strings"
 )
 
-func LoadBanner(fielname string) (map[rune][]string, error) {
-	ban, err := os.ReadFile(fielname)
+func LoadBanner(filename string) (map[rune][]string, error) {
+	ban, err := os.ReadFile(filename)
 	if err != nil {
 		return nil, err
 	}
-	gin := strings.ReplaceAll(string(ban), "\r", "\n")
-	alt := strings.Split(gin, "\n")
+
+	fit := strings.ReplaceAll(string(ban), "\r", "\n")
+	line := strings.Split(fit, "\n")
 	mp := make(map[rune][]string)
 	rn := rune(32)
-	for i := 0; i < len(alt); i += 9 {
-		if i+8 < len(alt) {
-			mp[rn] = alt[i+1 : i+9]
+	for i := 0; i < len(line); i += 9 {
+		if i+8 < len(line) {
+			mp[rn] = line[i+1 : i+9]
 			rn++
 		}
+
 		if rn > 126 {
 			break
 		}
+
 		if len(mp) == 0 {
-			return nil, errors.New("Error found")
+			return nil, errors.New("error")
 		}
 	}
 	return mp, err

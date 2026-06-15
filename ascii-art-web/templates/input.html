@@ -1,29 +1,24 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html>
     <head>
-    <title>ASCII-ART-WEB</title>
+        <title>ASCII ART WEB</title>
     </head>
-        <body>
-            <h1>ASCII ART GENERATOR</h1>
+    <body>
+        <h1>ASCII ART GENERATOR</h1>
+        <form action="/ascii-art" method="post">
+            <input type="text" name="text" placeholder="Enter text">
+            <br>
 
-            <form action="/ascii-art" method="POST">
-                <input type="text" name="text" placeholder="Enter Text">
-                <br>
+            <label for="banner">Choose a banner style:</label>
+            <br>
 
-                <input type="radio" name="banner" value="standard">
-                <label>standard</label>
-                <br>
-
-                <input type="radio" name="banner" value="shadow">
-                <label>shadow</label>
-                <br>
-
-                <input type="radio" name="banner" value="thinkertoy">
-                <label>thinkertoy</label>
-                <br>
-
-                <input type="submit" value="submit"> 
-            </form>
-        </body>
-    </title>
+            <select name="banner" id="banner">
+                <option value="standard">Standard</option>
+                <option value="shadow">Shadow</option>
+                <option value="thinkertoy">Thinkertoy</option>
+            </select>
+            <br>
+            <button type="submit">submit</button>
+        </form>
+    </body>
 </html>

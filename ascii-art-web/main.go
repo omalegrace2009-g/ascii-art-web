@@ -13,8 +13,7 @@ type PageData struct {
 func main() {
 	http.HandleFunc("/", HandlePage)
 	http.HandleFunc("/ascii-art", HandleArt)
-	http.HandleFunc("/result", HandleResult)
-	fmt.Println("Server Listening at http://localhost:8080")
+	fmt.Println("Server Running on http://localhost:8080")
 	err := http.ListenAndServe(":8080", nil)
 	if err != nil {
 		log.Fatal(err)

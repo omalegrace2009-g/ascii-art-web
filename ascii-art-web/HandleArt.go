@@ -2,20 +2,18 @@ package main
 
 import (
 	"ascii-art-web/ascii"
+	"html/template"
 	"net/http"
 )
 
-var generatedArt string
-
 func HandleArt(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
-		http.Error(w, "400 Bad Request", http.StatusBadRequest)
+		http.Error(w, "404 Not Found", http.StatusNotFound)
 		return
 	}
 
 	text := r.FormValue("text")
 	banner := r.FormValue("banner")
-
 	if text == "" || banner == "" {
 		http.Error(w, "400 Bad Request", http.StatusBadRequest)
 		return
@@ -24,21 +22,27 @@ func HandleArt(w http.ResponseWriter, r *http.Request) {
 	switch banner {
 	case "standard", "shadow", "thinkertoy":
 	default:
-		http.Error(w, "400 Bad Request", http.StatusBadRequest)
+		http.Error(w, "404 Not Found", http.StatusNotFound)
 		return
 	}
 
-	hold := "banner/" + banner + ".txt"
-
-	ban, err := ascii.LoadBanner(hold)
+	lban := "banner/" + banner + ".txt"
+	ban, err := ascii.LoadBanner(lban)
 	if err != nil {
 		http.Error(w, "404 Not Found", http.StatusNotFound)
 		return
 	}
 
-	GenArt := ascii.GenerateArt(text, ban)
+	genArt := ascii.GenerateArt(text, ban)
+	data := PageData{
+		Result: genArt,
+	}
 
-	generatedArt = GenArt
+	templ, err := template.ParseFiles("templates/output.html")
+	if err != nil {
+		http.Error(w, "500 Internal Server Error", http.StatusInternalServerError)
+		return
+	}
 
-	http.Redirect(w, r, "/result", http.StatusSeeOther)
+	err = templ.Execute(w, data)
 }

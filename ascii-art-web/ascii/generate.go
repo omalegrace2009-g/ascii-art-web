@@ -4,32 +4,32 @@ import (
 	"strings"
 )
 
-func GenerateArt(s string, ban map[rune][]string) string {
+func GenerateArt(s string, banner map[rune][]string) string {
 	if s == "" {
 		return ""
 	}
 
-	for _, l := range s {
-		if l < 32 || l > 126 {
-			return  "Error: invalid Character"
+	for _, rn := range s {
+		if rn < 32 || rn > 126 {
+			return "Error: Invalid Character"
 		}
 	}
 
-	g := SplitInput(s)
-	for _, p := range g {
-		if p != "" {
+	sp := SplitInput(s)
+	for _, ch := range sp {
+		if ch != "" {
 			break
 		}
 	}
 
 	var result strings.Builder
-	for _, l := range g {
-		if l == "" {
+	for _, st := range sp {
+		if st == "" {
 			result.WriteString("\n")
 		} else {
-			a := RenderLine(l, ban)
-			for _, at := range a {
-				result.WriteString(at)
+			r := RenderLine(s, banner)
+			for _, l := range r {
+				result.WriteString(l)
 				result.WriteString("\n")
 			}
 		}
