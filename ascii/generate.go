@@ -9,13 +9,15 @@ func GenerateArt(s string, banner map[rune][]string) string {
 		return ""
 	}
 
-	for _, rn := range s {
-		if rn < 32 || rn > 126 {
+	line := strings.ReplaceAll(s, "\r\n", "\n")
+
+	for _, rn := range line {
+		if (rn < 32 || rn > 126) && rn != '\n' {
 			return "Error: Invalid Character"
 		}
 	}
-	line := strings.ReplaceAll(s, "\r", "")
-	sp := strings.Split(line, "\\n")
+
+	sp := strings.Split(line, "\n")
 
 	for _, ch := range sp {
 		if ch != "" {
@@ -28,7 +30,7 @@ func GenerateArt(s string, banner map[rune][]string) string {
 		if st == "" {
 			result.WriteString("\n")
 		} else {
-			r := RenderLine(s, banner)
+			r := RenderLine(st, banner)
 			for _, l := range r {
 				result.WriteString(l)
 				result.WriteString("\n")
