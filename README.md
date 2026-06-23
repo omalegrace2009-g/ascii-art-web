@@ -10,7 +10,7 @@ The application supports multiple banner files such as **standard**, **shadow**,
 
 ## Authors
 
-* Ooja Omale
+* Omale Grace
 
 ---
 
