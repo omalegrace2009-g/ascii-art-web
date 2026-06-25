@@ -27,26 +27,31 @@ The application supports multiple banner files such as **standard**, **shadow**,
 * Input validation and error handling.
 * Dynamic banner switching from the output page.
 * Preservation of user input when changing styles.
+* Instant style comparison without regenerating text manually.
 
 ---
 
 ## Project Structure
 
 ```
+## Project Structure
+
 ascii-art-web/
 ├── ascii/
 │   ├── generate.go
-│   ├── LoadBanner.go
+│   ├── loadbanner.go
 │   └── render.go
-├── banner/
+├── banners/
 │   ├── standard.txt
 │   ├── shadow.txt
 │   └── thinkertoy.txt
 ├── templates/
-│   ├── index.html
-│   └── output.html
+│   ├── input.html
+│   ├── output.html
+│   └── base.html
 ├── ArtHandler.go
 ├── PageHandler.go
+├── SwitchHandler.go
 ├── main.go
 └── go.mod
 ```
@@ -90,12 +95,17 @@ http://localhost:8080
 
 After the ASCII art is generated:
 
-1. Use the banner selection form available on the output page.
-2. Choose a different style.
-3. Click **Change Style**.
-4. The application regenerates the same text using the selected banner.
+1. Click one of the available banner style links:
 
-This allows users to compare different ASCII-art representations without re-entering their text.
+* standard
+* shadow
+* thinkertoy
+
+2. The application automatically regenerates the ASCII art using the selected banner.
+3. The original text is preserved during the switch.
+4. The page refreshes with the newly styled output.
+
+This allows users to quickly compare different ASCII-art representations without re-entering text or submitting a new form.
 
 ---
 
@@ -117,37 +127,40 @@ Creates a lightweight and decorative representation.
 
 ## HTTP Endpoints
 
-| Method | Route         | Description                            |
-| ------ | ------------- | -------------------------------------- |
-| GET    | /             | Displays the home page                 |
-| POST   | /ascii-art    | Generates ASCII art                    |
-| POST   | /change-style | Regenerates output with another banner |
+| Method | Route             | Description                                            |
+| ------ | ------------------|--------------------------------------------------------|
+| GET    | /                 | Displays the home page                                 |
+| POST   | /ascii-art        | Generates ASCII art                                    |
+| POST   | /ascii-art-switch | Regenerates output with using a different banner style |
 
 ---
 
+
+---
+
+### 3. Error Handling section
+
+Since you've implemented several HTTP status codes, show them off.
+
+```markdown
 ## Error Handling
 
 The application handles:
 
-* 400 Bad Request
+- **400 Bad Request**
+  - Empty input
+  - Missing query parameters
+  - Invalid requests
 
-  * Empty input
-  * Invalid banner selection
-  * Malformed requests
+- **404 Not Found**
+  - Unknown routes
 
-* 404 Not Found
+- **405 Method Not Allowed**
+  - Unsupported HTTP methods
 
-  * Unknown routes
-
-* 405 Method Not Allowed
-
-  * Unsupported HTTP methods
-
-* 500 Internal Server Error
-
-  * Banner loading failures
-  * Template execution errors
-  * Unexpected server-side issues
+- **500 Internal Server Error**
+  - Banner loading failures
+  - Template parsing or execution failures
 
 ---
 
@@ -168,12 +181,16 @@ Banner files are read and parsed into memory. Each printable ASCII character is 
 
 ### Banner Switching
 
-When a user selects a new banner on the output page:
+The application supports dynamic banner switching from the output page.
 
-1. The original text is preserved using hidden form fields.
-2. The newly selected banner is submitted.
-3. The server regenerates the ASCII art.
-4. The output page refreshes with the updated style.
+
+1. The generated output page contains links for all available banner styles.
+2. When a user clicks a banner style link, the original text and selected banner are sent as query parameters.
+3. The server loads the requested banner file.
+4. The ASCII art is regenerated using the same text.
+5. The updated result is displayed immediately.
+
+This feature enables fast comparison between different banner styles while preserving the user's original input.
 
 ---
 
