@@ -140,9 +140,7 @@ Creates a lightweight and decorative representation.
 
 ### 3. Error Handling section
 
-Since you've implemented several HTTP status codes, show them off.
 
-```markdown
 ## Error Handling
 
 The application handles:
